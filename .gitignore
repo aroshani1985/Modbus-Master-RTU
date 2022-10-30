@@ -1,3 +1,5 @@
+#Directories
+QTModbusMaster/build-ModbusMasterRTU-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/
 # C++ objects and libs
 *.slo
 *.lo
