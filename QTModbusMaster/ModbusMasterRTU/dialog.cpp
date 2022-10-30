@@ -114,14 +114,14 @@ void Dialog::on_btn_send_test_clicked()
 {
     //QByteArray data = QByteArray::fromHex("01040000000131ca");
     update_modbus_params();
-    QByteArray data = _mb.ReadIunputRegisterPacket();
-    _spx.send(data);
+    _mb.ReadIunputRegisterPacket();
+    _spx.send(_mb.getPacket());
     _sp_tim.setInterval(600);
     _sp_tim.setSingleShot(true);
     _sp_tim.start();
-    QString DataAsString = QString::number(data.length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
+    QString DataAsString = QString::number(_mb.getPacket().length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
     update_txt_status(DataAsString , Qt::green);
-    DataAsString = data.toHex('-').toUpper();
+    DataAsString = _mb.getPacket().toHex('-').toUpper();
     update_txt_status(DataAsString , Qt::yellow);
 }
 
@@ -133,6 +133,21 @@ void Dialog::on_sp_receive()
     QString DataAsString = QString::number(rec_data_len) + " Bytes Received from " +  _spx.getSPNames().at(_sp_selected_idx);
     update_txt_status(DataAsString, Qt::white);
     update_txt_status(data.toHex('-').toUpper(), Qt::yellow);
+
+    _mb.ProcessModbusSlavePacket(data);
+    if(_mb.getErrorCode() == 0){
+        QVector<quint16> rec_u16 = _mb.getU16DataArray();
+        QString rec_data_str = "Received U16 Array: ";
+        for(int i = 0; i<rec_u16.length(); i++){
+            rec_data_str+= QString::number(rec_u16[i], 16 ).toUpper();
+        }
+        update_txt_status(rec_data_str, Qt::white);
+    }
+    else{
+        update_txt_status("Invalid packet, Errcode: " + QString::number(_mb.getErrorCode(), 16 ), Qt::red);
+    }
+
+
 }
 
 void Dialog::on_btn_clear_txt_clicked()
