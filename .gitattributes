@@ -4,3 +4,5 @@
 
 ModbusMasterRTU/* linguist-documentation=false
 ModbusMasterRTU/* linguist-vendored
+
+generated/Makefile linguist-generated=true
