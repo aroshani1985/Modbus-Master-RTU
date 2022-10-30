@@ -8,6 +8,7 @@ Dialog::Dialog(QWidget *parent)
 {
     ui->setupUi(this);
     update_sp_combo_box();
+
 }
 
 Dialog::~Dialog()
@@ -42,6 +43,11 @@ void Dialog::update_sp_combo_box()
     }
 }
 
+void Dialog::init_sp_receive_event()
+{
+    connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, &Dialog::on_sp_receive);
+}
+
 void Dialog::on_pushButton_clicked()
 {
     update_sp_combo_box();
@@ -52,6 +58,7 @@ void Dialog::on_btn_connect_clicked()
     if(_spx.getSPCount() != 0)
     {
         _spx.open(_spx.getSPNames().at(_sp_selected_idx));
+        init_sp_receive_event();
         update_txt_status("Connected to "+ _spx.getSPNames().at(_sp_selected_idx), Qt::green);
     }
     else
@@ -81,14 +88,22 @@ void Dialog::on_cbx_spx_currentIndexChanged(int index)
     }
 }
 
-
 void Dialog::on_btn_send_test_clicked()
 {
-    QByteArray data = QByteArray::fromHex("F0020D");
+    QByteArray data = QByteArray::fromHex("01040000000131ca");
     _spx.send(data);
     QString DataAsString = QString::number(data.length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
     update_txt_status(DataAsString , Qt::green);
     DataAsString = data.toHex('-').toUpper();
     update_txt_status(DataAsString , Qt::red);
+}
+
+void Dialog::on_sp_receive()
+{
+    int rec_data_len = _spx.getSPObject().bytesAvailable();
+    QByteArray data = _spx.getSPObject().readAll();
+    QString DataAsString = QString::number(rec_data_len) + " Bytes Received from " +  _spx.getSPNames().at(_sp_selected_idx);
+    update_txt_status(DataAsString, Qt::white);
+    update_txt_status(data.toHex('-').toUpper(), Qt::yellow);
 }
 

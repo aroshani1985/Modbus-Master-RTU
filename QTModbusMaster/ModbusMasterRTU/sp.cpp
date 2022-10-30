@@ -97,3 +97,8 @@ bool sp::IsSPOpen()
 {
     return _spx.isOpen();
 }
+
+QSerialPort& sp::getSPObject()
+{
+    return _spx;
+}

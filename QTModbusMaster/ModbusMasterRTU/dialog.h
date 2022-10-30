@@ -16,8 +16,8 @@ public:
     Dialog(QWidget *parent = nullptr);
     ~Dialog();
     void update_txt_status(QString Msg, QColor c);
-
     void update_sp_combo_box();
+    void init_sp_receive_event();
 
 private slots:
     void on_pushButton_clicked();
@@ -29,6 +29,8 @@ private slots:
     void on_cbx_spx_currentIndexChanged(int index);
 
     void on_btn_send_test_clicked();
+
+    void on_sp_receive();
 
 private:
     Ui::Dialog *ui;
