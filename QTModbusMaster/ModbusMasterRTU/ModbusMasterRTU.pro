@@ -1,4 +1,5 @@
 QT       += core gui
+QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,10 +11,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    dialog.cpp
+    dialog.cpp \
+    sp.cpp
 
 HEADERS += \
-    dialog.h
+    dialog.h \
+    sp.h
 
 FORMS += \
     dialog.ui
