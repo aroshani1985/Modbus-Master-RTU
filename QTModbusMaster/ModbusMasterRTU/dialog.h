@@ -28,6 +28,8 @@ private slots:
 
     void on_cbx_spx_currentIndexChanged(int index);
 
+    void on_btn_send_test_clicked();
+
 private:
     Ui::Dialog *ui;
     sp _spx;

@@ -19,6 +19,8 @@ public:
     void open(QString sp_name);
     void close();
 
+    void send(QByteArray data);
+
     int getSPCount() const;
     QVector<QString> getSPNames() const;
     bool IsSPOpen();

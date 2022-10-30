@@ -73,6 +73,16 @@ void sp::close()
     }
 }
 
+void sp::send(QByteArray data)
+{
+    if(_spx.isOpen()){
+       _spx.write(data);
+    }
+    else {
+        _err_code = 3;
+    }
+}
+
 int sp::getSPCount() const
 {
     return _sp_count;

@@ -81,3 +81,14 @@ void Dialog::on_cbx_spx_currentIndexChanged(int index)
     }
 }
 
+
+void Dialog::on_btn_send_test_clicked()
+{
+    QByteArray data = QByteArray::fromHex("F0020D");
+    _spx.send(data);
+    QString DataAsString = QString::number(data.length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
+    update_txt_status(DataAsString , Qt::green);
+    DataAsString = data.toHex('-').toUpper();
+    update_txt_status(DataAsString , Qt::red);
+}
+
