@@ -30,6 +30,7 @@ void Dialog::update_sp_combo_box()
     }
     else
     {
+        _spx.find_available_serial_ports();
         ui->cbx_spx->clear();
         QString str = " Available COM Ports:  ";
         for(auto spn : _spx.getSPNames()){
@@ -38,6 +39,45 @@ void Dialog::update_sp_combo_box()
             str+= "\t";
         }
         update_txt_status(QString::number(_spx.getSPCount()) + str, Qt::green);
+    }
+}
+
+void Dialog::on_pushButton_clicked()
+{
+    update_sp_combo_box();
+}
+
+void Dialog::on_btn_connect_clicked()
+{
+    if(_spx.getSPCount() != 0)
+    {
+        _spx.open(_spx.getSPNames().at(_sp_selected_idx));
+        update_txt_status("Connected to "+ _spx.getSPNames().at(_sp_selected_idx), Qt::green);
+    }
+    else
+    {
+         update_txt_status("No COM Port Available", Qt::red);
+    }
+}
+
+void Dialog::on_btn_disconnect_clicked()
+{
+    if(_spx.IsSPOpen()){
+        _spx.close();
+         update_txt_status("Disconnected from "+ _spx.getSPNames().at(_sp_selected_idx), Qt::yellow);
+    }
+    else
+    {
+        update_txt_status("No COM Port Is Open", Qt::red);
+    }
+}
+
+void Dialog::on_cbx_spx_currentIndexChanged(int index)
+{
+    if(_spx.getSPCount()!= 0){
+       _sp_selected_idx = index;
+       QString str_buff = _spx.getSPNames().at(index) + " is selected.";
+       update_txt_status(str_buff, Qt::yellow);
     }
 }
 

@@ -19,8 +19,18 @@ public:
 
     void update_sp_combo_box();
 
+private slots:
+    void on_pushButton_clicked();
+
+    void on_btn_connect_clicked();
+
+    void on_btn_disconnect_clicked();
+
+    void on_cbx_spx_currentIndexChanged(int index);
+
 private:
     Ui::Dialog *ui;
     sp _spx;
+    int _sp_selected_idx;
 };
 #endif // DIALOG_H

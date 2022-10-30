@@ -82,3 +82,8 @@ QVector<QString> sp::getSPNames() const
 {
     return _sp_names;
 }
+
+bool sp::IsSPOpen()
+{
+    return _spx.isOpen();
+}

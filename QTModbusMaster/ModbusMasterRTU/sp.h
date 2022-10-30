@@ -21,6 +21,7 @@ public:
 
     int getSPCount() const;
     QVector<QString> getSPNames() const;
+    bool IsSPOpen();
 
 private:
      int _err_code;
@@ -29,6 +30,7 @@ private:
      QVector<QString> _sp_names;
      int _sp_selected_idx;
      QSerialPort _spx;
+
 
 
 signals:
