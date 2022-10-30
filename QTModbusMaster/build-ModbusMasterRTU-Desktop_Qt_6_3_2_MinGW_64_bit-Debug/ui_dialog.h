@@ -10,6 +10,7 @@
 #define UI_DIALOG_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 
@@ -24,6 +25,11 @@ public:
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
         Dialog->resize(800, 600);
+        Dialog->setMinimumSize(QSize(800, 600));
+        Dialog->setMaximumSize(QSize(800, 600));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("../../../../Dev14010704/qtconsole14010802/images/spicon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        Dialog->setWindowIcon(icon);
 
         retranslateUi(Dialog);
 
@@ -32,7 +38,7 @@ public:
 
     void retranslateUi(QDialog *Dialog)
     {
-        Dialog->setWindowTitle(QCoreApplication::translate("Dialog", "Dialog", nullptr));
+        Dialog->setWindowTitle(QCoreApplication::translate("Dialog", "Modbus Master RTU ", nullptr));
     } // retranslateUi
 
 };
