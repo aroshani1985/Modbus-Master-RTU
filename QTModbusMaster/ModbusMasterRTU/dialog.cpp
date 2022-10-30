@@ -10,6 +10,7 @@ Dialog::Dialog(QWidget *parent)
     update_sp_combo_box();
     update_modbus_fcn_combo_box();
     _mb.setSlaveAddress(1);
+    init_sp_timer();
 }
 
 Dialog::~Dialog()
@@ -62,6 +63,12 @@ void Dialog::update_modbus_params()
     _mb.setDataLength((quint16) ui->nud_data_len->value());
 }
 
+void Dialog::init_sp_timer()
+{
+    _sp_tim.setInterval(600);
+    connect(&_sp_tim, &QTimer::timeout, this, &Dialog::on_sp_timer_tick);
+}
+
 void Dialog::on_btn_find_spx_clicked()
 {
     update_sp_combo_box();
@@ -109,17 +116,32 @@ void Dialog::on_btn_send_test_clicked()
     update_modbus_params();
     QByteArray data = _mb.ReadIunputRegisterPacket();
     _spx.send(data);
+    _sp_tim.setInterval(600);
+    _sp_tim.setSingleShot(true);
+    _sp_tim.start();
     QString DataAsString = QString::number(data.length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
     update_txt_status(DataAsString , Qt::green);
     DataAsString = data.toHex('-').toUpper();
-    update_txt_status(DataAsString , Qt::red);
+    update_txt_status(DataAsString , Qt::yellow);
 }
 
 void Dialog::on_sp_receive()
 {
+     _sp_tim.stop();
     int rec_data_len = _spx.getSPObject().bytesAvailable();
     QByteArray data = _spx.getSPObject().readAll();
     QString DataAsString = QString::number(rec_data_len) + " Bytes Received from " +  _spx.getSPNames().at(_sp_selected_idx);
     update_txt_status(DataAsString, Qt::white);
     update_txt_status(data.toHex('-').toUpper(), Qt::yellow);
 }
+
+void Dialog::on_btn_clear_txt_clicked()
+{
+    ui->txt_sts->clear();
+}
+
+void Dialog::on_sp_timer_tick()
+{
+    update_txt_status("Modbus receive timeout!", Qt::red);
+}
+

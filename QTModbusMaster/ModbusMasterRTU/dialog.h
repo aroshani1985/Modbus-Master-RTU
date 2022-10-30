@@ -2,6 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QTimer>
 #include "sp.h"
 #include "modbus.h"
 
@@ -21,6 +22,7 @@ public:
     void update_modbus_fcn_combo_box();
     void init_sp_receive_event();
     void update_modbus_params();
+    void init_sp_timer();
 
 private slots:
     void on_btn_find_spx_clicked();
@@ -35,10 +37,15 @@ private slots:
 
     void on_sp_receive();
 
+    void on_btn_clear_txt_clicked();
+
+    void on_sp_timer_tick();
+
 private:
     Ui::Dialog *ui;
     sp _spx;
     int _sp_selected_idx;
     Modbus _mb;
+    QTimer _sp_tim;
 };
 #endif // DIALOG_H
