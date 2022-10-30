@@ -132,6 +132,7 @@ quint16 Modbus::ExtractU16(int index){
 }
 
 QVector<quint16> Modbus::ExtractU16Array(){
+    _data_u16_array.clear();
     _data_u16_len = _len_data_slv/2;
     for(int i = 0; i<_data_u16_len; i++){
         _data_u16_array.push_back(ExtractU16(i));

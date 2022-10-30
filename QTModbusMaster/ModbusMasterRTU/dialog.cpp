@@ -1,5 +1,6 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include <iostream>
 #include <QDateTime>
 
 Dialog::Dialog(QWidget *parent)
@@ -139,15 +140,15 @@ void Dialog::on_sp_receive()
         QVector<quint16> rec_u16 = _mb.getU16DataArray();
         QString rec_data_str = "Received U16 Array: ";
         for(int i = 0; i<rec_u16.length(); i++){
-            rec_data_str+= QString::number(rec_u16[i], 16 ).toUpper();
+            //rec_data_str+= QString::number(rec_u16[i], 16 ).toUpper();
+            rec_data_str+= QString("%1").arg((quint16)rec_u16[i], 0, 16);
+            rec_data_str+= " - ";
         }
         update_txt_status(rec_data_str, Qt::white);
     }
     else{
         update_txt_status("Invalid packet, Errcode: " + QString::number(_mb.getErrorCode(), 16 ), Qt::red);
     }
-
-
 }
 
 void Dialog::on_btn_clear_txt_clicked()
