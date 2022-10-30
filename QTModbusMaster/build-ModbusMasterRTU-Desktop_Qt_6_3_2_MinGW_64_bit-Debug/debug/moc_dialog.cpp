@@ -24,7 +24,7 @@ QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Dialog_t {
     uint offsetsAndSizes[18];
     char stringdata0[7];
-    char stringdata1[22];
+    char stringdata1[24];
     char stringdata2[1];
     char stringdata3[23];
     char stringdata4[26];
@@ -38,17 +38,17 @@ struct qt_meta_stringdata_Dialog_t {
 static const qt_meta_stringdata_Dialog_t qt_meta_stringdata_Dialog = {
     {
         QT_MOC_LITERAL(0, 6),  // "Dialog"
-        QT_MOC_LITERAL(7, 21),  // "on_pushButton_clicked"
-        QT_MOC_LITERAL(29, 0),  // ""
-        QT_MOC_LITERAL(30, 22),  // "on_btn_connect_clicked"
-        QT_MOC_LITERAL(53, 25),  // "on_btn_disconnect_clicked"
-        QT_MOC_LITERAL(79, 30),  // "on_cbx_spx_currentIndexChanged"
-        QT_MOC_LITERAL(110, 5),  // "index"
-        QT_MOC_LITERAL(116, 24),  // "on_btn_send_test_clicked"
-        QT_MOC_LITERAL(141, 13)   // "on_sp_receive"
+        QT_MOC_LITERAL(7, 23),  // "on_btn_find_spx_clicked"
+        QT_MOC_LITERAL(31, 0),  // ""
+        QT_MOC_LITERAL(32, 22),  // "on_btn_connect_clicked"
+        QT_MOC_LITERAL(55, 25),  // "on_btn_disconnect_clicked"
+        QT_MOC_LITERAL(81, 30),  // "on_cbx_spx_currentIndexChanged"
+        QT_MOC_LITERAL(112, 5),  // "index"
+        QT_MOC_LITERAL(118, 24),  // "on_btn_send_test_clicked"
+        QT_MOC_LITERAL(143, 13)   // "on_sp_receive"
     },
     "Dialog",
-    "on_pushButton_clicked",
+    "on_btn_find_spx_clicked",
     "",
     "on_btn_connect_clicked",
     "on_btn_disconnect_clicked",
@@ -97,7 +97,7 @@ void Dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         auto *_t = static_cast<Dialog *>(_o);
         (void)_t;
         switch (_id) {
-        case 0: _t->on_pushButton_clicked(); break;
+        case 0: _t->on_btn_find_spx_clicked(); break;
         case 1: _t->on_btn_connect_clicked(); break;
         case 2: _t->on_btn_disconnect_clicked(); break;
         case 3: _t->on_cbx_spx_currentIndexChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;

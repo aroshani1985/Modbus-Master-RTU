@@ -12,10 +12,12 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     dialog.cpp \
+    modbus.cpp \
     sp.cpp
 
 HEADERS += \
     dialog.h \
+    modbus.h \
     sp.h
 
 FORMS += \

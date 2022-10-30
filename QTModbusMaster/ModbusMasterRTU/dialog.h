@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "sp.h"
+#include "modbus.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Dialog; }
@@ -17,10 +18,12 @@ public:
     ~Dialog();
     void update_txt_status(QString Msg, QColor c);
     void update_sp_combo_box();
+    void update_modbus_fcn_combo_box();
     void init_sp_receive_event();
+    void update_modbus_params();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_btn_find_spx_clicked();
 
     void on_btn_connect_clicked();
 
@@ -36,5 +39,6 @@ private:
     Ui::Dialog *ui;
     sp _spx;
     int _sp_selected_idx;
+    Modbus _mb;
 };
 #endif // DIALOG_H

@@ -8,7 +8,8 @@ Dialog::Dialog(QWidget *parent)
 {
     ui->setupUi(this);
     update_sp_combo_box();
-
+    update_modbus_fcn_combo_box();
+    _mb.setSlaveAddress(1);
 }
 
 Dialog::~Dialog()
@@ -43,14 +44,28 @@ void Dialog::update_sp_combo_box()
     }
 }
 
+void Dialog::update_modbus_fcn_combo_box()
+{
+    ui->cbx_modbus_fcn->clear();
+    ui->cbx_modbus_fcn->addItem("Read Input Register (4)");
+}
+
 void Dialog::init_sp_receive_event()
 {
     connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, &Dialog::on_sp_receive);
 }
 
-void Dialog::on_pushButton_clicked()
+void Dialog::update_modbus_params()
+{
+    _mb.setSlaveAddress((quint8) ui->nud_slv_add->value());
+    _mb.setMemoryAddress((quint16) ui->nud_mem_add->value());
+    _mb.setDataLength((quint16) ui->nud_data_len->value());
+}
+
+void Dialog::on_btn_find_spx_clicked()
 {
     update_sp_combo_box();
+
 }
 
 void Dialog::on_btn_connect_clicked()
@@ -90,7 +105,9 @@ void Dialog::on_cbx_spx_currentIndexChanged(int index)
 
 void Dialog::on_btn_send_test_clicked()
 {
-    QByteArray data = QByteArray::fromHex("01040000000131ca");
+    //QByteArray data = QByteArray::fromHex("01040000000131ca");
+    update_modbus_params();
+    QByteArray data = _mb.ReadIunputRegisterPacket();
     _spx.send(data);
     QString DataAsString = QString::number(data.length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
     update_txt_status(DataAsString , Qt::green);
@@ -106,4 +123,3 @@ void Dialog::on_sp_receive()
     update_txt_status(DataAsString, Qt::white);
     update_txt_status(data.toHex('-').toUpper(), Qt::yellow);
 }
-

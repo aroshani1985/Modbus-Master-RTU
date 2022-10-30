@@ -34,7 +34,7 @@ public:
     QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout;
     QComboBox *cbx_spx;
-    QPushButton *pushButton;
+    QPushButton *btn_find_spx;
     QPushButton *btn_connect;
     QPushButton *btn_disconnect;
     QGroupBox *groupBox_2;
@@ -93,11 +93,11 @@ public:
 
         horizontalLayout->addWidget(cbx_spx);
 
-        pushButton = new QPushButton(layoutWidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setMinimumSize(QSize(0, 40));
+        btn_find_spx = new QPushButton(layoutWidget);
+        btn_find_spx->setObjectName(QString::fromUtf8("btn_find_spx"));
+        btn_find_spx->setMinimumSize(QSize(0, 40));
 
-        horizontalLayout->addWidget(pushButton);
+        horizontalLayout->addWidget(btn_find_spx);
 
         btn_connect = new QPushButton(layoutWidget);
         btn_connect->setObjectName(QString::fromUtf8("btn_connect"));
@@ -297,7 +297,7 @@ public:
     {
         Dialog->setWindowTitle(QCoreApplication::translate("Dialog", "Modbus Master RTU ", nullptr));
         groupBox->setTitle(QCoreApplication::translate("Dialog", "Serial Poer Selection", nullptr));
-        pushButton->setText(QCoreApplication::translate("Dialog", "Find Serial Ports", nullptr));
+        btn_find_spx->setText(QCoreApplication::translate("Dialog", "Find Serial Ports", nullptr));
         btn_connect->setText(QCoreApplication::translate("Dialog", "Connect", nullptr));
         btn_disconnect->setText(QCoreApplication::translate("Dialog", "Disconnect", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("Dialog", "Control Panel", nullptr));
