@@ -2,7 +2,4 @@
 *.h linguist-language=C++
 *.cpp linguist-language=C++
 
-ModbusMasterRTU/* linguist-documentation=false
-ModbusMasterRTU/* linguist-vendored
-
-generated/Makefile linguist-generated=true
+generated/Makefile.* linguist-generated=true
