@@ -41,6 +41,8 @@ private slots:
 
     void on_sp_timer_tick();
 
+    void on_checkBox_stateChanged(int arg1);
+
 private:
     Ui::Dialog *ui;
     sp _spx;

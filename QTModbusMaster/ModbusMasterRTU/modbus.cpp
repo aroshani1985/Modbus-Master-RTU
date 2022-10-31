@@ -43,7 +43,7 @@ void Modbus::ProcessModbusSlavePacket(QByteArray SlavePaclet)
     }
     if(_rec_pkt[1] == ModBusFcnCode::ReadInputRegisters){
         if(_is_float){
-
+            ExtractFloatArray();
         }
         else{
             ExtractU16Array();
@@ -124,6 +124,29 @@ void Modbus::ConvertToQuint8(QByteArray Packet){
     }
 }
 
+//le little endian
+float  Modbus::ExtractFloat(int index, bool is_le){
+    QByteArray ba;
+    ba.resize(4);
+    if(is_le){
+            //little endian  LSRF modscan
+            ba[0] = _rec_pkt[4*index + 4];
+            ba[1] = _rec_pkt[4*index + 3];
+            ba[2] = _rec_pkt[4*index + 6];
+            ba[3] = _rec_pkt[4*index + 5];
+    }
+    else{
+
+        //big endian   MSRF modscan
+        ba[0] = _rec_pkt[4*index + 6];
+        ba[1] = _rec_pkt[4*index + 5];
+        ba[2] = _rec_pkt[4*index + 4];
+        ba[3] = _rec_pkt[4*index + 3];
+    }
+    float number =  *(reinterpret_cast<const float*>(ba.constData()));
+    return number;
+}
+
 quint16 Modbus::ExtractU16(int index){
     quint16 val  = _rec_pkt[2*index + 3];
     val<<=8;
@@ -140,6 +163,18 @@ QVector<quint16> Modbus::ExtractU16Array(){
 
     return _data_u16_array;
 }
+
+QVector<float> Modbus::ExtractFloatArray(){
+    _data_float_array.clear();
+    _data_float_len = _len_data_slv/4;
+    for(int i = 0; i<_data_float_len; i++){
+        _data_float_array.push_back(ExtractFloat(i, false));
+    }
+
+    return _data_float_array;
+}
+
+
 
 QByteArray Modbus::getPacket() const
 {
@@ -166,9 +201,24 @@ void Modbus::setDataLength(quint16 DataLength)
     _len_data = DataLength;
 }
 
+void Modbus::setFloat(bool IsFloat)
+{
+    _is_float = IsFloat;
+}
+
+bool Modbus::getFloat()
+{
+    return _is_float;
+}
+
 QVector<quint16> Modbus::getU16DataArray()
 {
     return _data_u16_array;
+}
+
+QVector<float> Modbus::getFloatDataArray()
+{
+    return _data_float_array;
 }
 
 int Modbus::getErrorCode()

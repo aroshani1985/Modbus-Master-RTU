@@ -14,11 +14,18 @@ public:
     quint16 ExtractU16(int index);
     QVector<quint16> ExtractU16Array();
 
+    float ExtractFloat(int index, bool is_le);
+    QVector<float> ExtractFloatArray();
+
     QByteArray getPacket() const;
     void setSlaveAddress(quint8 SlaveAddress);
     void setMemoryAddress(quint16 MemoryAddress);
     void setDataLength(quint16 DataLength);
+    void setFloat(bool IsFloat);
+    bool getFloat();
     QVector<quint16> getU16DataArray();
+    QVector<float> getFloatDataArray();
+
     int getErrorCode();
 
     enum ModBusFcnCode
@@ -48,8 +55,9 @@ public:
     QVector<quint8> _rec_pkt;
     uint8_t _rec_pkt_len;
     QVector<quint16> _data_u16_array;
+    QVector<float> _data_float_array;
     quint8 _data_u16_len;
-
+    quint8 _data_float_len;
     quint8 _len_data_slv;
 
     void ConvertToQuint8(QByteArray Packet);
