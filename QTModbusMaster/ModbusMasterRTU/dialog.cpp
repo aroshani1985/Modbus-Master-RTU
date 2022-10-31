@@ -57,6 +57,22 @@ void Dialog::init_sp_receive_event()
     connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, &Dialog::on_sp_receive);
 }
 
+void Dialog::init_sp_receive_event(void(Dialog::* slotName )() )
+{
+    connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, slotName);
+}
+
+void Dialog::init_sp_receive_event(void(*slotName )() )
+{
+    connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, slotName);
+}
+
+void Dialog::init_sp_receive_event(QObject *Receiver, void(*ReceiverSlot )())
+{
+    connect(&_spx.getSPObject(), &QSerialPort::readyRead, Receiver, ReceiverSlot);
+}
+
+
 void Dialog::update_modbus_params()
 {
     _mb.setSlaveAddress((quint8) ui->nud_slv_add->value());
@@ -81,7 +97,10 @@ void Dialog::on_btn_connect_clicked()
     if(_spx.getSPCount() != 0)
     {
         _spx.open(_spx.getSPNames().at(_sp_selected_idx));
-        init_sp_receive_event();
+        //init_sp_receive_event();
+        init_sp_receive_event(&Dialog::on_sp_receive);
+        //init_sp_receive_event(this, &Dialog::on_sp_receive);
+
         update_txt_status("Connected to "+ _spx.getSPNames().at(_sp_selected_idx), Qt::green);
     }
     else
@@ -114,16 +133,21 @@ void Dialog::on_cbx_spx_currentIndexChanged(int index)
 void Dialog::on_btn_send_test_clicked()
 {
     //QByteArray data = QByteArray::fromHex("01040000000131ca");
-    update_modbus_params();
-    _mb.ReadIunputRegisterPacket();
-    _spx.send(_mb.getPacket());
-    _sp_tim.setInterval(600);
-    _sp_tim.setSingleShot(true);
-    _sp_tim.start();
-    QString DataAsString = QString::number(_mb.getPacket().length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
-    update_txt_status(DataAsString , Qt::green);
-    DataAsString = _mb.getPacket().toHex('-').toUpper();
-    update_txt_status(DataAsString , Qt::yellow);
+    if(_spx.IsSPOpen()){
+        update_modbus_params();
+        _mb.ReadIunputRegisterPacket();
+        _spx.send(_mb.getPacket());
+        _sp_tim.setInterval(600);
+        _sp_tim.setSingleShot(true);
+        _sp_tim.start();
+        QString DataAsString = QString::number(_mb.getPacket().length()) + " Bytes sent to " + _spx.getSPNames().at(_sp_selected_idx);
+        update_txt_status(DataAsString , Qt::green);
+        DataAsString = _mb.getPacket().toHex('-').toUpper();
+        update_txt_status(DataAsString , Qt::yellow);
+    }
+    else{
+         update_txt_status("Serial Port is NOT Open!" , Qt::red);
+    }
 }
 
 void Dialog::on_sp_receive()
@@ -174,7 +198,6 @@ void Dialog::on_sp_timer_tick()
 {
     update_txt_status("Modbus receive timeout!", Qt::red);
 }
-
 
 void Dialog::on_checkBox_stateChanged(int arg1)
 {
