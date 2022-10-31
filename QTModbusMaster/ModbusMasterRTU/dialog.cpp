@@ -131,24 +131,27 @@ void Dialog::on_sp_receive()
      _sp_tim.stop();
     int rec_data_len = _spx.getSPObject().bytesAvailable();
     QByteArray data = _spx.getSPObject().readAll();
-    QString DataAsString = QString::number(rec_data_len) + " Bytes Received from " +  _spx.getSPNames().at(_sp_selected_idx);
-    update_txt_status(DataAsString, Qt::white);
-    update_txt_status(data.toHex('-').toUpper(), Qt::yellow);
+    if(data.length() != 0){
+        QString DataAsString = QString::number(rec_data_len) + " Bytes Received from " +  _spx.getSPNames().at(_sp_selected_idx);
+        update_txt_status(DataAsString, Qt::white);
+        update_txt_status(data.toHex('-').toUpper(), Qt::yellow);
 
-    _mb.ProcessModbusSlavePacket(data);
-    if(_mb.getErrorCode() == 0){
-        QVector<quint16> rec_u16 = _mb.getU16DataArray();
-        QString rec_data_str = "Received U16 Array: ";
-        for(int i = 0; i<rec_u16.length(); i++){
-            //rec_data_str+= QString::number(rec_u16[i], 16 ).toUpper();
-            rec_data_str+= QString("%1").arg((quint16)rec_u16[i], 0, 16);
-            rec_data_str+= " - ";
+        _mb.ProcessModbusSlavePacket(data);
+        if(_mb.getErrorCode() == 0){
+            QVector<quint16> rec_u16 = _mb.getU16DataArray();
+            QString rec_data_str = "Received U16 Array: ";
+            for(int i = 0; i<rec_u16.length(); i++){
+                //rec_data_str+= QString::number(rec_u16[i], 16 ).toUpper();
+                rec_data_str+= QString("%1").arg(rec_u16[i], 4, 16,(QChar)'0').toUpper().prepend("0x");
+                rec_data_str+= " - ";
+            }
+            update_txt_status(rec_data_str, Qt::white);
         }
-        update_txt_status(rec_data_str, Qt::white);
+        else{
+            update_txt_status("Invalid packet, Errcode: " + QString::number(_mb.getErrorCode(), 16 ), Qt::red);
+        }
     }
-    else{
-        update_txt_status("Invalid packet, Errcode: " + QString::number(_mb.getErrorCode(), 16 ), Qt::red);
-    }
+
 }
 
 void Dialog::on_btn_clear_txt_clicked()
