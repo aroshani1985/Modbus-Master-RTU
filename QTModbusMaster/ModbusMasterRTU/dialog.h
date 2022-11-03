@@ -20,10 +20,13 @@ public:
     void update_txt_status(QString Msg, QColor c);
     void update_sp_combo_box();
     void update_modbus_fcn_combo_box();
-    void init_sp_receive_event();
-    void init_sp_receive_event(void(Dialog::* slotName )());
-    void init_sp_receive_event(void(*slotName )());
-    void init_sp_receive_event(QObject *Receiver,void(*ReceiverSlot )());
+
+
+    void init_sp_receive_event(void(Dialog::* ReceiverSlot )());
+
+    //void init_sp_receive_event(QObject *ReceiverObj,void(Dialog::* ReceiverSlot)());
+
+
     void update_modbus_params();
     void init_sp_timer();
 

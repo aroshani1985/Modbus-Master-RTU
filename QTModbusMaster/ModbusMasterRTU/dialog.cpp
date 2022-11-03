@@ -52,26 +52,17 @@ void Dialog::update_modbus_fcn_combo_box()
     ui->cbx_modbus_fcn->addItem("Read Input Register (4)");
 }
 
-void Dialog::init_sp_receive_event()
+void Dialog::init_sp_receive_event(void(Dialog::* ReceiverSlot )() )
 {
-    connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, &Dialog::on_sp_receive);
+    connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, ReceiverSlot);
 }
 
-void Dialog::init_sp_receive_event(void(Dialog::* slotName )() )
+/* // not compiled
+void Dialog::init_sp_receive_event(QObject *ReceiverObj, void(Dialog::* ReceiverSlot)())
 {
-    connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, slotName);
+    connect(&_spx.getSPObject(), &QSerialPort::readyRead, ReceiverObj, ReceiverSlot);
 }
-
-void Dialog::init_sp_receive_event(void(*slotName )() )
-{
-    connect(&_spx.getSPObject(), &QSerialPort::readyRead, this, slotName);
-}
-
-void Dialog::init_sp_receive_event(QObject *Receiver, void(*ReceiverSlot )())
-{
-    connect(&_spx.getSPObject(), &QSerialPort::readyRead, Receiver, ReceiverSlot);
-}
-
+*/
 
 void Dialog::update_modbus_params()
 {
@@ -97,9 +88,8 @@ void Dialog::on_btn_connect_clicked()
     if(_spx.getSPCount() != 0)
     {
         _spx.open(_spx.getSPNames().at(_sp_selected_idx));
-        //init_sp_receive_event();
         init_sp_receive_event(&Dialog::on_sp_receive);
-        //init_sp_receive_event(this, &Dialog::on_sp_receive);
+        //init_sp_receive_event(this, &Dialog::on_sp_receive); // not compiled
 
         update_txt_status("Connected to "+ _spx.getSPNames().at(_sp_selected_idx), Qt::green);
     }

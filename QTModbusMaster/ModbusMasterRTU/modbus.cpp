@@ -174,8 +174,6 @@ QVector<float> Modbus::ExtractFloatArray(){
     return _data_float_array;
 }
 
-
-
 QByteArray Modbus::getPacket() const
 {
     QByteArray pkt;
